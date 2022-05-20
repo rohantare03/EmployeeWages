@@ -5,11 +5,11 @@ namespace EmployeeWages
     {
         public static void Main(string[] args)
         {
-            EmpWageComputation empWageComputation = new EmpWageComputation();
-            empWageComputation.AddCompany("TATA", 20, 8, 4, 100, 20);
-            empWageComputation.CalcEmpWage("tata");
-            empWageComputation.AddCompany("MAHINDRA", 30, 8, 4, 100, 20);
-            empWageComputation.CalcEmpWage("mahindra");
+            CompanyWage_Computation companyWageComputation = new CompanyWage_Computation();
+            companyWageComputation.Add_Company("TATA", 20, 8, 4, 100, 20);
+            companyWageComputation.Calc_CompanyWage("tata");
+            companyWageComputation.Add_Company("MAHINDRA", 30, 8, 4, 100, 20);
+            companyWageComputation.Calc_CompanyWage("mahindra");
         }
     }
 }
