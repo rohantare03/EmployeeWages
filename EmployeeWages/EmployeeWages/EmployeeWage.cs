@@ -11,18 +11,20 @@ namespace EmployeeWages
         public const int WagesPerHr = 20;
         public const int FullTimeWorkHrsPerDay = 8;
         public const int PartTimeWorkHoursPerDay = 4;
+        public const int MaxWorkHrs = 100;
+        public const int MaxWorkDays = 20;
         public const int IsFullTime = 2;
         public const int IsPartTime = 1;
         public const int IsAbsent = 0;
-        public const int NumWorkDaysPerMonth = 20;
-        public int EmpMontlyWage = 0;
+        public int TotalWage = 0;
         public int EmpDailyWage = 0;
 
-        public void MonthWage()
+        public void CalcWage()
         {
             int Day = 1;
             int EmpWorkHrs = 0;
-            while (Day <= NumWorkDaysPerMonth)
+            int TotalWorkHrs = 0;
+            while (Day < MaxWorkDays && TotalWorkHrs <= MaxWorkHrs)
             {
                 Random check = new Random();
                 int CheckEmp = check.Next(0, 3);
@@ -40,10 +42,11 @@ namespace EmployeeWages
                 }
                 EmpDailyWage = EmpWorkHrs * WagesPerHr;
 
-                EmpMontlyWage += EmpDailyWage;
+                TotalWage += EmpDailyWage;
                 Day++;
+                TotalWorkHrs += EmpWorkHrs;
             }
-            Console.WriteLine("Employee Montly Wage :" + EmpMontlyWage);
+            Console.WriteLine("Total Working Days :" + Day + "\nTotal Working Hrs :" + TotalWorkHrs + "\nTotal Employee Wage :" + TotalWage);
         }
     }
 }
