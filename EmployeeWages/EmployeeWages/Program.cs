@@ -5,14 +5,17 @@ namespace EmployeeWages
     {
         public static void Main(string[] args)
         {
-            CompanyWage_Computations computations = new CompanyWage_Computations();
-            computations.AddCompany("TATA", 20, 8, 4, 100, 20);
-            computations.WageCalculation("tata");
-            computations.AddCompany("MAHINDRA", 30, 8, 4, 100, 20);
-            computations.WageCalculation("mahindra");
-            computations.AddCompany("DMART", 40, 9, 5, 100, 30);
-            computations.WageCalculation("dmart");
-            computations.ViewWage();
+            Wage_Computations wage_Computations = new Wage_Computations();
+            wage_Computations.AddCompany("TATA", 20, 8, 4, 100, 20);
+            wage_Computations.WageCalculation("tata");
+            wage_Computations.AddCompany("TCS", 30, 7, 5, 150, 20);
+            wage_Computations.WageCalculation("tcs");
+            wage_Computations.AddCompany("TESLA", 50, 9, 5, 200, 20);
+            wage_Computations.WageCalculation("tesla");
+
+            Console.WriteLine("Enter the Company name");
+            string company = Convert.ToString(Console.ReadLine());
+            wage_Computations.Search(company);
         }
     }
 }

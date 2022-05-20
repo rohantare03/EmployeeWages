@@ -27,12 +27,12 @@ namespace EmployeeWages
         }
 
     }
-    public interface IComputeEmpWage
+    public interface IComputeEmpWages
     {
         public void AddCompany(string CompanyName, int WagePerHr, int FullHrPerDay, int PartHrPerDay, int MaxWorkHrs, int MaxWorkDays);
         public void WageCalculation(string CompanyName);
     }
-    class CompanyWage_Computations : IComputeEmpWage
+    class Wage_Computations : IComputeEmpWages
     {
         public const int FullTime = 1;
         public const int PartTime = 2;
@@ -40,7 +40,7 @@ namespace EmployeeWages
         public ArrayList Company_List;
         public int Company_Index = 0;
 
-        public CompanyWage_Computations()
+        public Wage_Computations()
         {
             Companies_Dict = new Dictionary<string, EmployeeWage>();
             Company_List = new ArrayList();
@@ -49,10 +49,10 @@ namespace EmployeeWages
 
         public void AddCompany(string CompanyName, int WagePerHr, int FullHrPerDay, int PartHrPerDay, int MaxWorkHrs, int MaxWorkDays)
         {
-            EmployeeWage company_obj = new EmployeeWage(CompanyName.ToLower(), WagePerHr, FullHrPerDay, PartHrPerDay, MaxWorkHrs, MaxWorkDays);
-            Companies_Dict.Add(CompanyName.ToLower(), company_obj);
+            EmployeeWage company = new EmployeeWage(CompanyName.ToLower(), WagePerHr, FullHrPerDay, PartHrPerDay, MaxWorkHrs, MaxWorkDays);
+            Companies_Dict.Add(CompanyName.ToLower(), company);
             Company_List.Add(CompanyName);
-            Company_List.Add(WagePerHr * FullHrPerDay);
+
 
         }
         public int Check_Present()
@@ -62,25 +62,26 @@ namespace EmployeeWages
         public void WageCalculation(string CompanyName)
         {
             int HrPerDay = 0;
-            int WagePerDay = 0;
             int PresentDays = 0;
+            int WagePerDay = 0;
             int TotalWorkHrs = 0;
-            int MontlyWage = 0;
+            int TotalWage = 0;
+
 
             if (!Companies_Dict.ContainsKey(CompanyName.ToLower()))
                 throw new ArgumentNullException("Company doesn't exists");
-            Companies_Dict.TryGetValue(CompanyName.ToLower(), out EmployeeWage company_obj);
+            Companies_Dict.TryGetValue(CompanyName.ToLower(), out EmployeeWage company);
 
-            while (TotalWorkHrs < company_obj.MaxWorkHrs && PresentDays <= company_obj.MaxWorkDays)
+            while (TotalWorkHrs < company.MaxWorkHrs && PresentDays <= company.MaxWorkDays)
             {
                 switch (Check_Present())
                 {
                     case FullTime:
-                        HrPerDay = company_obj.FullHrPerDay;
+                        HrPerDay = company.FullHrPerDay;
                         PresentDays++;
                         break;
                     case PartTime:
-                        HrPerDay = company_obj.PartHrPerDay;
+                        HrPerDay = company.PartHrPerDay;
                         PresentDays++;
                         break;
                     default:
@@ -88,17 +89,22 @@ namespace EmployeeWages
                         break;
                 }
                 TotalWorkHrs += HrPerDay;
-                WagePerDay = (company_obj.WagePerHr * HrPerDay);
-                MontlyWage += WagePerDay;
+                WagePerDay = company.WagePerHr * HrPerDay;
+                TotalWage += WagePerDay;
             }
-            Company_List.Add(MontlyWage);
+            Company_List.Add(TotalWage);
 
         }
-        public void ViewWage()
+        public void Search(string CompanyName)
         {
-            for (int i = 0; i < Company_List.Count; i += 3)
+            if (Company_List.Contains(CompanyName))
             {
-                Console.WriteLine("Daily wage and Montly Wage for {0} is {1} and {2}", Company_List[i], Company_List[i + 1], Company_List[i + 2]);
+                for (int i = Company_List.IndexOf(CompanyName); i <= Company_List.IndexOf(CompanyName); i++)
+                    Console.WriteLine("Company: {0} and its TotalWage is {1}", Company_List[i], Company_List[i + 1]);
+            }
+            else
+            {
+                Console.WriteLine("Company doesn't exists");
             }
         }
     }
