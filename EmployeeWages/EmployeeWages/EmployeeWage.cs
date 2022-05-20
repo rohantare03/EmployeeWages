@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,36 +27,35 @@ namespace EmployeeWages
         }
 
     }
-    public interface ICompanyEmpWage
+    public interface IComputeEmpWage
     {
         public void AddCompany(string CompanyName, int WagePerHr, int FullHrPerDay, int PartHrPerDay, int MaxWorkHrs, int MaxWorkDays);
         public void WageCalculation(string CompanyName);
     }
-    class Wage_Computation : ICompanyEmpWage
+    class Wages_Computation : IComputeEmpWage
     {
         public const int FullTime = 1;
         public const int PartTime = 2;
         public Dictionary<string, EmployeeWage> Companies_Dict;
-        public string[] Company_List;
+        public ArrayList Company_List;
         public int Company_Index = 0;
 
-        public Wage_Computation(int Number)
+        public Wages_Computation()
         {
             Companies_Dict = new Dictionary<string, EmployeeWage>();
-            Company_List = new string[2 * Number];
+            Company_List = new ArrayList();
 
         }
 
         public void AddCompany(string CompanyName, int WagePerHr, int FullHrPerDay, int PartHrPerDay, int MaxWorkHrs, int MaxWorkDays)
         {
-            EmployeeWage company = new EmployeeWage(CompanyName.ToLower(), WagePerHr, FullHrPerDay, PartHrPerDay, MaxWorkHrs, MaxWorkDays);
-            Companies_Dict.Add(CompanyName.ToLower(), company);
-            Company_List[Company_Index] = CompanyName;
-            Company_Index++;
+            EmployeeWage company_obj = new EmployeeWage(CompanyName.ToLower(), WagePerHr, FullHrPerDay, PartHrPerDay, MaxWorkHrs, MaxWorkDays);
+            Companies_Dict.Add(CompanyName.ToLower(), company_obj);
+            Company_List.Add(CompanyName);
         }
         public int Check_Present()
         {
-            return new Random().Next(0, 3);
+            return new Random().Next(1, 3);
         }
         public void WageCalculation(string CompanyName)
         {
@@ -67,18 +67,18 @@ namespace EmployeeWages
 
             if (!Companies_Dict.ContainsKey(CompanyName.ToLower()))
                 throw new ArgumentNullException("Company doesn't exists");
-            Companies_Dict.TryGetValue(CompanyName.ToLower(), out EmployeeWage company);
+            Companies_Dict.TryGetValue(CompanyName.ToLower(), out EmployeeWage company_obj);
 
-            while (TotalWorkHrs < company.MaxWorkHrs && PresentDays <= company.MaxWorkDays)
+            while (TotalWorkHrs < company_obj.MaxWorkHrs && PresentDays <= company_obj.MaxWorkDays)
             {
                 switch (Check_Present())
                 {
                     case FullTime:
-                        HrPerDay = company.FullHrPerDay;
+                        HrPerDay = company_obj.FullHrPerDay;
                         PresentDays++;
                         break;
                     case PartTime:
-                        HrPerDay = company.PartHrPerDay;
+                        HrPerDay = company_obj.PartHrPerDay;
                         PresentDays++;
                         break;
                     default:
@@ -86,16 +86,14 @@ namespace EmployeeWages
                         break;
                 }
                 TotalWorkHrs += HrPerDay;
-                WagePerDay = (company.WagePerHr * HrPerDay);
+                WagePerDay = (company_obj.WagePerHr * HrPerDay);
                 MontlyWage += WagePerDay;
             }
-            Company_List[Company_Index] = Convert.ToString(MontlyWage);
-            Company_Index++;
-
+            Company_List.Add(MontlyWage);
         }
         public void ViewWage()
         {
-            for (int i = 0; i < Company_List.Length; i += 2)
+            for (int i = 0; i < Company_List.Count; i += 2)
             {
                 Console.WriteLine("Montly wage for {0} is {1}", Company_List[i], Company_List[i + 1]);
             }
