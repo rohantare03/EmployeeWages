@@ -19,7 +19,7 @@ namespace EmployeeWages
         public int TotalWage = 0;
         public int EmpDailyWage = 0;
 
-        public void CalcWage()
+        public void CalculateWage() 
         {
             int Day = 1;
             int EmpWorkHrs = 0;
