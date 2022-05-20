@@ -32,7 +32,7 @@ namespace EmployeeWages
         public void AddCompany(string CompanyName, int WagePerHr, int FullHrPerDay, int PartHrPerDay, int MaxWorkHrs, int MaxWorkDays);
         public void WageCalculation(string CompanyName);
     }
-    class Wages_Computation : IComputeEmpWage
+    class CompanyWage_Computations : IComputeEmpWage
     {
         public const int FullTime = 1;
         public const int PartTime = 2;
@@ -40,7 +40,7 @@ namespace EmployeeWages
         public ArrayList Company_List;
         public int Company_Index = 0;
 
-        public Wages_Computation()
+        public CompanyWage_Computations()
         {
             Companies_Dict = new Dictionary<string, EmployeeWage>();
             Company_List = new ArrayList();
@@ -52,6 +52,8 @@ namespace EmployeeWages
             EmployeeWage company_obj = new EmployeeWage(CompanyName.ToLower(), WagePerHr, FullHrPerDay, PartHrPerDay, MaxWorkHrs, MaxWorkDays);
             Companies_Dict.Add(CompanyName.ToLower(), company_obj);
             Company_List.Add(CompanyName);
+            Company_List.Add(WagePerHr * FullHrPerDay);
+
         }
         public int Check_Present()
         {
@@ -90,12 +92,13 @@ namespace EmployeeWages
                 MontlyWage += WagePerDay;
             }
             Company_List.Add(MontlyWage);
+
         }
         public void ViewWage()
         {
-            for (int i = 0; i < Company_List.Count; i += 2)
+            for (int i = 0; i < Company_List.Count; i += 3)
             {
-                Console.WriteLine("Montly wage for {0} is {1}", Company_List[i], Company_List[i + 1]);
+                Console.WriteLine("Daily wage and Montly Wage for {0} is {1} and {2}", Company_List[i], Company_List[i + 1], Company_List[i + 2]);
             }
         }
     }
