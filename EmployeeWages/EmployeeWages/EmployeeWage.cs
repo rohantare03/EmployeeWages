@@ -8,28 +8,42 @@ namespace EmployeeWages
 {
     internal class EmployeeWage
     {
-        public int EmpHr = 0;
-        public int WagesPerHr = 20;
+        public const int WagesPerHr = 20;
+        public const int FullTimeWorkHrsPerDay = 8;
+        public const int PartTimeWorkHoursPerDay = 4;
         public const int IsFullTime = 2;
         public const int IsPartTime = 1;
-        public void EmpWage()
+        public const int IsAbsent = 0;
+        public const int NumWorkDaysPerMonth = 20;
+        public int EmpMontlyWage = 0;
+        public int EmpDailyWage = 0;
+
+        public void MonthWage()
         {
-            Random check = new Random();
-            int CheckEmp = check.Next(0, 3);
-            switch (CheckEmp)
+            int Day = 1;
+            int EmpWorkHrs = 0;
+            while (Day <= NumWorkDaysPerMonth)
             {
-                case IsPartTime:
-                    EmpHr = 4;
-                    break;
-                case IsFullTime:
-                    EmpHr = 8;
-                    break;
-                default:
-                    EmpHr = 0;
-                    break;
+                Random check = new Random();
+                int CheckEmp = check.Next(0, 3);
+                switch (CheckEmp)
+                {
+                    case IsAbsent:
+                        EmpWorkHrs = 0;
+                        break;
+                    case IsPartTime:
+                        EmpWorkHrs = 4;
+                        break;
+                    case IsFullTime:
+                        EmpWorkHrs = 8;
+                        break;
+                }
+                EmpDailyWage = EmpWorkHrs * WagesPerHr;
+
+                EmpMontlyWage += EmpDailyWage;
+                Day++;
             }
-            int empwage = EmpHr * WagesPerHr;
-            Console.WriteLine("Dailywages :" + empwage);
+            Console.WriteLine("Employee Montly Wage :" + EmpMontlyWage);
         }
     }
 }
