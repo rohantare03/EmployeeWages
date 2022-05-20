@@ -10,8 +10,10 @@ namespace EmployeeWages
     {
         public int EmpPresent = 1;
         public int EmpHr = 8;
+        public int PartTimeEmpHr = 4;
         public int WagesPerHr = 20;
-        public void DailyWage()
+        public int FullTimeEmp = 1;
+        public void PartTimeWage()
         {
             Random check = new Random();
             int CheckEmp = check.Next(0, 2);
@@ -19,8 +21,19 @@ namespace EmployeeWages
             if (EmpPresent == CheckEmp)
             {
                 Console.WriteLine("Employee is Present");
-                int DailyWagePerHr = EmpHr * WagesPerHr;
-                Console.WriteLine("Dailywages :" + DailyWagePerHr);
+
+                Random Timecheck = new Random();
+                int CheckTimeEmp = Timecheck.Next(0, 2);
+                if (FullTimeEmp == CheckTimeEmp)
+                {
+                    int DailyWagePerHr = EmpHr * WagesPerHr;
+                    Console.WriteLine("Dailywages :" + DailyWagePerHr);
+                }
+                else
+                {
+                    int DailyWagePerHr1 = PartTimeEmpHr * WagesPerHr;
+                    Console.WriteLine("Dailywages :" + DailyWagePerHr1);
+                }
             }
             else
             {
